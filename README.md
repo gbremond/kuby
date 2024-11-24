@@ -45,7 +45,7 @@ kubectl -n monitoring port-forward svc/grafana 3000:80 &
 
 ## Loki
 ```bash
-helm install --namespace monitoring loki grafana/loki -f monitoring/loki/values.yaml
+helm install --namespace monitoring loki grafana/loki -f monitoring/loki/values_old.yaml
 ```
 Send logs to : http://loki-gateway.monitoring.svc.cluster.local/loki/api/v1/push
 
