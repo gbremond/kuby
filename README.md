@@ -66,3 +66,10 @@ kubectl -n monitoring port-forward svc/grafana 3000:80 &
 kubectl -n monitoring port-forward  svc/loki 3100 &
 kubectl -n apps port-forward svc/nginx-hello-world 8082:80 &
 ```
+
+## Debug 
+
+```bash
+kubectl run mycurlpod -n monitoring --image=curlimages/curl -i --tty -- sh
+nslookup loki.
+```
