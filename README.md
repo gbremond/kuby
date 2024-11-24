@@ -1,52 +1,69 @@
-# kuby
+# 🎲 kuby
 
-A simple experiment with Kubernetes, ArgoCD and the Grafana stack.
+A simple experiment with Kubernetes, ArgoCD, and the Grafana stack.
 
-# Prerequisites
+---
+## 📋 Prerequisites
 
-- a Kubernetes cluster
-- kubectl 
-- argocd CLI
+Before you start, ensure you have:
 
-# Instructions
+- ✅ a Kubernetes cluster
+- ✅ `kubectl` CLI installed
+- ✅ `argocd` CLI installed
 
-## Install Argo CD 
+---
+
+## 📦 Instructions
+
+### 1️⃣ Install Argo CD
+
+Run the following commands to set up Argo CD:
 
 ```bash
 kubectl create namespace argocd
 
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+argocd admin initial-password -n argocd
 ```
 
 Create application referencing your repository.
 
-## Access all
+### 2️⃣ Access All Services
+
+Use the following commands to port-forward services for local access:
 
 ```bash
 kubectl -n argocd port-forward svc/argocd-server 8081:443 &
 kubectl -n monitoring port-forward svc/dashboard-kong-proxy 8443:443 &
-kubectl -n monitoring port-forward svc/grafana 3000 &
+kubectl -n monitoring port-forward svc/grafana 3000:80 &
 kubectl -n monitoring port-forward svc/loki 3100 &
-kubectl -n apps port-forward svc/nginx-hello-world 8082 &
+kubectl -n apps port-forward svc/nginx-hello-world 8082:80 &
 ```
 
-Get secrets for Dashboard and Grafana :
+### 🔐 Secrets for Dashboard and Grafana 
+
+Retrieve the required tokens and passwords:
+
 ```bash
 kubectl create token dashboard-admin
 kubectl get secret -n monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
 ```
 
-### Logs (Loki)
-Endpoint for Grafana source : http://loki.monitoring:3100
+### 📊 Logs (Loki)
+- **Grafana Source Endpoint:** http://loki.monitoring:3100
 
-Push logs manually :
+Manually push logs to Loki:
+
 ```bash
 curl -H "Content-Type: application/json" \
   -s -X POST "http://localhost:3100/loki/api/v1/push" \
   --data-raw '{"streams": [{ "stream": { "foo": "bar2", "service_name": "test" }, "values": [ [ "'$(date +%s)000000000'", "hello" ] ] }]}'
 ```
 
-### Debug 
+### 🛠️ Debugging
+
+Run a temporary pod for debugging network connections:
 
 ```bash
 kubectl run mycurlpod -n monitoring --image=curlimages/curl -i --tty -- sh
