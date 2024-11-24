@@ -24,10 +24,9 @@ kubectl port-forward svc/argocd-server -n argocd 8081:443
 ## Dashboard 
 
 ```bash
-helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/
-helm upgrade --install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard --create-namespace --namespace monitoring
+kubectl -n argocd port-forward svc/dashboard-kong-proxy 8443:443 &
 
-kubectl -n monitoring port-forward svc/kubernetes-dashboard-kong-proxy 8443:443 &
+kubectl -n argocd create token dashboard-admin
 ```
 
 ## Deploy hello world
