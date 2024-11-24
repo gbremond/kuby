@@ -1,0 +1,76 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: nginx-hello-world-route
+  namespace: apps
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: HostRegexp(`^nginx\..+$`)
+      kind: Rule
+      services:
+        - name: nginx-hello-world
+          namespace: apps
+          port: 80
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: grafana-route
+  namespace: monitoring
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: HostRegexp(`^grafana\..+$`)
+      kind: Rule
+      services:
+        - name: grafana
+          namespace: monitoring
+          port: 80
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: argo-route
+  namespace: argocd
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - match: HostRegexp(`^argo\..+$`)
+      kind: Rule
+      services:
+        - name: argocd-server
+          namespace: argocd
+          port: 443
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: dashboard-route
+  namespace: monitoring
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: HostRegexp(`^dashboard\..+$`)
+      kind: Rule
+      middlewares:
+        - name: redirect-to-https
+      services:
+        - name: dashboard-kong-proxy
+          namespace: monitoring
+          port: 443
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: redirect-to-https
+  namespace: argocd
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true
