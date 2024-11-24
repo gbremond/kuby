@@ -1,0 +1,26 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: argo-route
+  namespace: argocd
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: HostRegexp(`^argo\..+$`)
+      kind: Rule
+      services:
+        - name: argocd-server
+          namespace: argocd
+          port: 443
+          serversTransport: no-verify-tls
+
+---
+
+apiVersion: traefik.io/v1alpha1
+kind: ServersTransport
+metadata:
+  name: no-verify-tls
+  namespace: argocd
+spec:
+  insecureSkipVerify: true

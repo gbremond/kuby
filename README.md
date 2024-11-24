@@ -69,3 +69,19 @@ Run a temporary pod for debugging network connections:
 kubectl run mycurlpod -n monitoring --image=curlimages/curl -i --tty -- sh
 nslookup loki.monitoring
 ```
+
+---
+
+##  📝 Todo
+
+- [ ] Expose without port-forwarding :
+  - [ ] Argo CD
+  - [ ] Dashboard UI
+  - [x] Grafana
+  - [x] nginx
+- [ ] Experiment Traefik 
+  - `kubectl port-forward $(kubectl get pods --selector "app.kubernetes.io/name=traefik" --output=name) 8080:8080`
+  - http://localhost:8080/dashboard/
+- [ ] Add more apps :
+  - [ ] JS HTTP server
+  - [ ] Rust HTTP server
