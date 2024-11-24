@@ -1,0 +1,5 @@
+# monitoring/kubernetes-dashboard/values.yaml
+service:
+  type: LoadBalancer
+rbac:
+  clusterReadOnlyRole: true

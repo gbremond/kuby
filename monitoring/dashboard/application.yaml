@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: dashboard
+  namespace: monitoring
+spec:
+  project: default
+  source:
+    repoURL: https://kubernetes.github.io/dashboard
+    targetRevision: 7.10.0
+    chart: kubernetes-dashboard
+    helm:
+      valueFiles:
+        - monitoring/dashboard/values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
