@@ -1,0 +1,26 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: dashboard-route
+  namespace: monitoring
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - match: HostRegexp(`^dashboard\..+$`)
+      kind: Rule
+      services:
+        - name: dashboard-kong-proxy
+          namespace: monitoring
+          port: 443
+          serversTransport: no-verify-tls
+---
+apiVersion: traefik.io/v1alpha1
+kind: ServersTransport
+metadata:
+  name: no-verify-tls
+  namespace: monitoring
+spec:
+  serverName: kubernetes-dashboard
+  insecureSkipVerify: true
