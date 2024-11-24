@@ -4,10 +4,16 @@ metadata:
   name: grafana
 spec:
   project: default
-  source:
-    repoURL: https://grafana.github.io/helm-charts
-    targetRevision: 8.6.1
-    chart: grafana
+  sources:
+    - repoURL: https://grafana.github.io/helm-charts
+      targetRevision: 8.6.1
+      chart: grafana
+      helm:
+        valueFiles:
+          - $values/monitoring/grafana/values.yaml
+    - repoURL: 'https://github.com/gbremond/kuby.git'
+      targetRevision: main
+      ref: values
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
