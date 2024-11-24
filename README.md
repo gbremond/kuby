@@ -18,15 +18,15 @@ kubectl create namespace argocd
 
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
-kubectl port-forward svc/argocd-server -n argocd 8081:443
+kubectl port-forward svc/argocd-server -n argocd 8081:443 &
 ```
 
 ## Dashboard 
 
 ```bash
-kubectl -n argocd port-forward svc/dashboard-kong-proxy 8443:443 &
+kubectl -n monitoring port-forward svc/dashboard-kong-proxy 8443:443 &
 
-kubectl -n argocd create token dashboard-admin
+kubectl -n default create token dashboard-admin
 ```
 
 ## Deploy hello world
