@@ -9,8 +9,8 @@ spec:
     targetRevision: 7.10.0
     chart: kubernetes-dashboard
     helm:
-      valueFiles:
-        - monitoring/dashboard/values.yaml
+      values: |
+        clusterReadOnlyRole: true
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
