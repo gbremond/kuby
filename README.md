@@ -74,7 +74,7 @@ nslookup loki.monitoring
 
 ##  📝 Todo
 
-- [ ] Expose without port-forwarding :
+- [x] Expose without port-forwarding :
   - [x] Argo CD
   - [x] Dashboard UI
   - [x] Grafana
@@ -82,6 +82,10 @@ nslookup loki.monitoring
 - [x] Experiment Traefik 
   - `kubectl port-forward $(kubectl get pods --selector "app.kubernetes.io/name=traefik" --output=name) 8080:8080`
   - http://localhost:8080/dashboard/
+- [ ] Add more monitoring :
+  - [ ] Mimir
+  - [ ] Tempo
+- [ ] Experiment with BookInfo App or demo : https://opentelemetry.io/docs/demo/kubernetes-deployment/
 - [ ] Add more apps :
   - [ ] JS HTTP server
   - [ ] Rust HTTP server

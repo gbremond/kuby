@@ -7,3 +7,8 @@ datasources:
         type: loki
         access: proxy
         url: http://loki.monitoring:3100
+      - name: Mimir
+        uid: mimir
+        type: prometheus
+        access: proxy
+        url: http://mimir.monitoring:3100
