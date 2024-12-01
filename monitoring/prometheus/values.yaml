@@ -1,0 +1,4 @@
+server:
+  extraFlags:
+    - web.enable-lifecycle
+    - web.enable-remote-write-receiver

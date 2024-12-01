@@ -93,3 +93,26 @@ alloy:
       loki.process "pod_logs" {
         forward_to = [loki.write.default.receiver]
       }
+      
+      // METRICS
+      prometheus.exporter.unix "local_system" { }
+
+      prometheus.scrape "scrape_metrics" {
+        targets         = prometheus.exporter.unix.local_system.targets
+        forward_to      = [prometheus.remote_write.metrics_service.receiver]
+        scrape_interval = "10s"
+        metric_relabel_configs = [
+          {
+            action = "replace"
+            source_labels = ["__name__"]
+            target_label = "__name__"
+            replacement = "alloy_${1}"
+          }
+        ]
+      }
+
+      prometheus.remote_write "metrics_service" {
+        endpoint {
+          url = "http://prometheus-server/api/v1/write"
+        }
+      }

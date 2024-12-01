@@ -41,11 +41,12 @@ kubectl -n monitoring port-forward svc/loki 3100 &
 kubectl -n apps port-forward svc/nginx-hello-world 8082:80 &
 ```
 
-### 🔐 Secrets for Dashboard and Grafana 
+### 🔐 Secrets for ArgoCD, Dashboard and Grafana 
 
 Retrieve the required tokens and passwords:
 
 ```bash
+argocd admin initial-password -n argocd
 kubectl create token dashboard-admin
 kubectl get secret -n monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
 ```
@@ -83,8 +84,11 @@ nslookup loki.monitoring
   - `kubectl port-forward $(kubectl get pods --selector "app.kubernetes.io/name=traefik" --output=name) 8080:8080`
   - http://localhost:8080/dashboard/
 - [ ] Add more monitoring :
-  - [ ] Mimir
+  - ~~[ ] Mimir~~ (my computer isn't strong enough to start all the pods 🙁)
+  - [ ] Prometheus
   - [ ] Tempo
+- [ ] Replace Kube dashboard with kubewall
+  - https://github.com/kubewall/kubewall
 - [ ] Experiment with BookInfo App or demo : https://opentelemetry.io/docs/demo/kubernetes-deployment/
 - [ ] Add more apps :
   - [ ] JS HTTP server
